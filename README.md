@@ -4,17 +4,18 @@ Use with `bpmn-js` library.
 ### How to
 
 Check version of `bpmn-js` repository: `https://github.com/bpmn-io/bpmn-js.git`
-Add `.css` and `.js` to `index.html`:
+<br>Add `.css` and `.js` to `index.html`:
 
 ```html
 <head>
-
 <!-- Bpmn -->
 <link rel="stylesheet" href="https://unpkg.com/bpmn-js@9.2.0/dist/assets/diagram-js.css">
 <link rel="stylesheet" href="https://unpkg.com/bpmn-js@9.2.0/dist/assets/bpmn-font/css/bpmn.css">
 
 <script src="https://unpkg.com/bpmn-js@9.2.0/dist/bpmn-modeler.development.js"></script>
 
+<!-- Dart -->
+<script defer src="main.dart.js"></script>
 </head>
 
 ```
@@ -23,14 +24,21 @@ In dart:
 
 import 'package:bpmn_dart/bpmn.dart';
 
-void main(){
-    final xml = "";
-    final bpmn = Bpmn.parse(xml);
-    final id = await bpmn.getId();
-    final definitionName = await bpmnSource.getDefinitionName();
-    final svg = await bpmnSource.getSvg();
+Future<void> main() async {
+  const xml = "";
+  final bpmn = Bpmn.parse(xml);
+  final id = await bpmn.getId();
+  final name = await bpmn.getDefinitionName();
+  final svg = await bpmn.getSvg();
 }
+
 ```
+
+#### Examples:
+ - [navigated_viewer](/example/navigated_viewer/)
+ - [modeler](/example/modeler/)
+ - [flutter_widget](/example/flutter_widget/)
+
 
 ---
 
