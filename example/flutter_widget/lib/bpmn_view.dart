@@ -78,7 +78,7 @@ class _BpmnViewState extends State<BpmnView> {
       ..style.bottom = "0";
 
     // final viewer = NavigatedViewer(BpmnOptions(container: area));
-    final viewer = BpmnJS(BpmnOptions(container: area))..importXML(xml);
+    final viewer = BpmnJS(BpmnOptions(container: area));
 
     id = const Uuid().v4();
     // ignore: undefined_prefixed_name
