@@ -4,6 +4,8 @@ Use with `bpmn-js` library.
 ### How to
 
 Check version of `bpmn-js` repository: `https://github.com/bpmn-io/bpmn-js.git`
+
+#### HTML
 <br>Add `.css` and `.js` to `index.html`:
 
 ```html
@@ -19,7 +21,8 @@ Check version of `bpmn-js` repository: `https://github.com/bpmn-io/bpmn-js.git`
 </head>
 
 ```
-In dart:
+
+#### DART
 ```dart
 
 import 'package:bpmn_dart/bpmn.dart';
@@ -37,8 +40,7 @@ Future<void> main() async {
 #### Examples:
  - [navigated_viewer](/example/navigated_viewer/)
  - [modeler](/example/modeler/)
- - [flutter_widget](/example/flutter_widget/)
-
+ - [flutter_widget](/example/flutter_widget/) <br>![flutter_widget_screenshot](/example/flutter_widget.png "Flutter widget example preview")
 
 ---
 
