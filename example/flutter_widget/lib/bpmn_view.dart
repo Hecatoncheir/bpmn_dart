@@ -1,6 +1,5 @@
-import 'dart:ui' as ui;
-
 import 'package:uuid/uuid.dart';
+
 import 'package:universal_html/html.dart';
 
 import 'package:flutter/material.dart';
@@ -81,8 +80,12 @@ class _BpmnViewState extends State<BpmnView> {
     final viewer = BpmnJS(BpmnOptions(container: area));
 
     id = const Uuid().v4();
+
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(id, (int viewId) => area);
+    ui.platformViewRegistry.registerViewFactory(
+      id,
+      (int viewId) => area,
+    );
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       viewer
