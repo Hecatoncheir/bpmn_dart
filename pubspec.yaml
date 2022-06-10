@@ -8,7 +8,6 @@ environment:
 dependencies:
   collection: ^1.16.0
   xml: ^6.1.0
-  js: ^0.6.4
   universal_html: ^2.0.8
 
 dev_dependencies:

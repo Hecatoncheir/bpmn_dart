@@ -4,8 +4,8 @@ library bpmnjs;
 
 import 'dart:math';
 
-import 'package:js/js.dart';
-import 'package:js/js_util.dart';
+import 'package:universal_html/js.dart';
+import 'package:universal_html/js_util.dart';
 
 @JS()
 @anonymous
