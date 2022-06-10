@@ -1,5 +1,6 @@
 # BPMN
 Use with `bpmn-js` library.
+<br> For web only. Forger about tests if use flutter.
 
 ### How to
 
