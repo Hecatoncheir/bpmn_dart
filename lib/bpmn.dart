@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:collection/collection.dart';
+import 'package:universal_html/html.dart';
 import 'package:xml/xml.dart';
 
 import 'bpmnjs_navigated_viewer.dart';
