@@ -46,4 +46,4 @@ Future<void> main() async {
 ---
 
 ### Run tests:
-`dart test -p chrome`
+`dart test --platform chrome`
