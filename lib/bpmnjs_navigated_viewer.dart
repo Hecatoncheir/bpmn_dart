@@ -5,8 +5,13 @@ library bpmnjs;
 
 import 'dart:math';
 
-import 'package:universal_html/js.dart';
-import 'package:universal_html/js_util.dart';
+import 'package:js/js.dart'
+    if (dart.library.js) 'package:js/js.dart' // Browser, Node.JS
+    if (dart.library.io) 'dart:js'; // VM
+
+import 'package:js/js_util.dart'
+    if (dart.library.js_util) 'package:js/js_util.dart' // Browser, Node.JS
+    if (dart.library.io) 'dart:js_util'; // VM
 
 @JS()
 @anonymous
