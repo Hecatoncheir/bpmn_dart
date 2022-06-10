@@ -1,27 +1,15 @@
-import 'package:uuid/uuid.dart';
+@TestOn('browser')
+library navigated_viewer_test;
 
-import 'ui/ui.dart';
+import 'package:test/test.dart';
 import 'package:universal_html/html.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:bpmn_dart/bpmnjs_navigated_viewer.dart';
 
-// import 'package:bpmn_dart/bpmnjs_navigated_viewer.dart';
-import 'package:bpmn_dart/bpmnjs_modeler.dart';
-
-class BpmnView extends StatefulWidget {
-  const BpmnView({super.key});
-
-  @override
-  State<BpmnView> createState() => _BpmnViewState();
-}
-
-class _BpmnViewState extends State<BpmnView> {
-  late final String id;
-
-  @override
-  void initState() {
-    super.initState();
+void main() {
+  test('NavigatedViewer', () {
+    final body = document.querySelector('body');
+    final viewer = NavigatedViewer(BpmnOptions(container: body));
 
     const xml = """
     <?xml version="1.0" encoding="UTF-8"?>
@@ -70,43 +58,7 @@ class _BpmnViewState extends State<BpmnView> {
     </definitions>
     """;
 
-    final area = DivElement()
-      ..style.position = "relative"
-      ..style.left = "0"
-      ..style.top = "0"
-      ..style.right = "0"
-      ..style.bottom = "0";
-
-    // final viewer = NavigatedViewer(BpmnOptions(container: area));
-    final viewer = BpmnJS(BpmnOptions(container: area));
-
-    id = const Uuid().v4();
-
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(
-      id,
-      (int viewId) => area,
-    );
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      viewer
-        ..importXML(xml)
-        ..get('canvas').zoom('fit-viewport');
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      key: const Key("bpmn_view"),
-      children: [
-        Expanded(
-          child: HtmlElementView(
-            key: const Key("bpmn_view_area"),
-            viewType: id,
-          ),
-        ),
-      ],
-    );
-  }
+    viewer.importXML(xml);
+    expect(viewer, isNotNull);
+  });
 }

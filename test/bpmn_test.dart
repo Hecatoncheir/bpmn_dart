@@ -1,7 +1,9 @@
 @TestOn('browser')
-library bpmn_browser_unit_test;
+library bpmn_test;
 
 import 'package:test/test.dart';
+import 'package:universal_html/html.dart';
+
 import 'package:bpmn_dart/bpmn.dart';
 
 void main() {

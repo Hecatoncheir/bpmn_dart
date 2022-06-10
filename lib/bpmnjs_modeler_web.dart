@@ -4,8 +4,6 @@ library bpmnjs;
 
 import 'dart:math';
 
-import 'dart:ui' as ui;
-
 import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 

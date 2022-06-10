@@ -3,5 +3,4 @@ abstract class BpmnInterface {
   Future<String?> getId();
   Future<String?> getDefinitionName();
   Future<List<String>?> getRoles();
-  Future<String?> getSvg();
 }
