@@ -43,6 +43,14 @@ Future<void> main() async {
  - [modeler](/example/modeler/)
  - [flutter_widget](/example/flutter_widget/) <br>![flutter_widget_screenshot](/example/flutter_widget.png "Flutter widget example preview")
 
+##### Run examples:
+```bash
+dart pub global activate webdev
+cd /example/navigated_viewer/
+webdev serve
+open http://127.0.0.1:8080
+```
+
 ---
 
 ### Run tests:
