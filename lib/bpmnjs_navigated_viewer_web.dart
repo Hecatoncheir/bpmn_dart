@@ -5,6 +5,7 @@ library bpmnjs;
 
 import 'dart:math';
 
+import 'package:bpmn_dart/bpmnjs_modeler.dart';
 import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 
@@ -45,6 +46,18 @@ class CanvasViewbox {
   external double get height;
 
   external factory CanvasViewbox({x, y, width, height});
+}
+
+extension Compare on CanvasViewbox {
+  bool compareTo(CanvasViewbox other) {
+    if (x == other.x &&
+        y == other.y &&
+        width == other.width &&
+        height == other.height) {
+      return true;
+    }
+    return false;
+  }
 }
 
 @JS()

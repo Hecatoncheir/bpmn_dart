@@ -29,6 +29,7 @@ void main() {
       final definitionName = await bpmnSource.getId();
       expect(definitionName, equals("Definition_ID"));
     });
+
     test("can return definition name", () async {
       const xml = """
       <?xml version="1.0" encoding="UTF-8"?>
