@@ -14,3 +14,8 @@ class ViewboxChange extends BpmnViewState {
   final CanvasViewbox viewbox;
   const ViewboxChange({required this.viewbox});
 }
+
+class ViewboxUpdate extends BpmnViewState {
+  final CanvasViewbox viewbox;
+  const ViewboxUpdate({required this.viewbox});
+}

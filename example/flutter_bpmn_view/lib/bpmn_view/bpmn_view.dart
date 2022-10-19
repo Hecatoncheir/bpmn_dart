@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,10 @@ class BpmnView extends StatefulWidget {
 
 class _BpmnViewState extends State<BpmnView> {
   late BpmnViewBlocInterface bpmnViewBloc;
+  NavigatedViewer? navigatedViewer;
+  BpmnCanvas? bpmnCanvas;
+
+  StreamSubscription<BpmnViewState>? streamSubscription;
 
   @override
   void didChangeDependencies() {
@@ -34,6 +40,28 @@ class _BpmnViewState extends State<BpmnView> {
 
     const event = ReadXml();
     bpmnViewBloc.getController().add(event);
+
+    streamSubscription = bpmnViewBloc.getStream().listen((state) {
+      if (state is ViewboxUpdate) {
+        final viewer = navigatedViewer;
+        if (viewer == null) return;
+        final canvas = bpmnCanvas;
+        if (canvas == null) return;
+
+        final updatedViewbox = state.viewbox;
+        final viewbox = canvas.viewbox();
+
+        if (updatedViewbox.compareTo(viewbox)) return;
+
+        canvas.viewbox(updatedViewbox);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    streamSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -55,6 +83,11 @@ class _BpmnViewState extends State<BpmnView> {
             ..style.bottom = "0";
 
           final viewer = NavigatedViewer(BpmnOptions(container: area));
+          navigatedViewer = viewer;
+
+          final canvas = viewer.get('canvas');
+          bpmnCanvas = canvas;
+
           final id = const Uuid().v4();
 
           // ignore: undefined_prefixed_name
@@ -62,10 +95,13 @@ class _BpmnViewState extends State<BpmnView> {
 
           SchedulerBinding.instance.addPostFrameCallback((_) async {
             await viewer.importXML(xml);
-            viewer.get('canvas').zoom('fit-viewport');
+            canvas.zoom('fit-viewport');
 
-            viewer.onViewboxChange((updatedViewer) {
-              final viewbox = updatedViewer.get('canvas').viewbox();
+            viewer.onViewboxChange((_) {
+              final canvas = bpmnCanvas;
+              if (canvas == null) return;
+              final viewbox = canvas.viewbox();
+
               final event = ViewboxChanged(viewbox: viewbox);
               bpmnViewBloc.getController().add(event);
             });

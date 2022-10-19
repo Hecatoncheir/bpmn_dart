@@ -141,14 +141,14 @@ class BpmnViewFooter extends StatelessWidget {
     final uriData = "data:image/svg+xml;base64, $encodedSvg";
 
     final originXml = await getXmlFromModeler(viewer);
-    final definitionId = await Bpmn.parse(originXml).getId();
-    final definitionName = await Bpmn.parse(originXml).getDefinitionName();
-    final name = saveFileName ?? definitionName ?? definitionId;
-    final fileName = name ?? "";
-    const fileType = '.svg';
+
+    final bpmn = Bpmn.parse(originXml);
+    final name =
+        saveFileName ?? await bpmn.getDefinitionName() ?? await bpmn.getId();
+    final fileNameWithExtension = "${name ?? "_"}.svg";
 
     final a = html.AnchorElement()
-      ..download = fileName + fileType
+      ..download = fileNameWithExtension
       ..href = uriData
       ..style.display = "none";
 
@@ -175,14 +175,14 @@ class BpmnViewFooter extends StatelessWidget {
     final uriData = "data:image/png;base64, $encodedSvg";
 
     final originXml = await getXmlFromModeler(viewer);
-    final definitionId = await Bpmn.parse(originXml).getId();
-    final definitionName = await Bpmn.parse(originXml).getDefinitionName();
-    final name = saveFileName ?? definitionName ?? definitionId;
-    final fileName = name ?? "";
-    const fileType = '.png';
+
+    final bpmn = Bpmn.parse(originXml);
+    final name =
+        saveFileName ?? await bpmn.getDefinitionName() ?? await bpmn.getId();
+    final fileNameWithExtension = "${name ?? "_"}.png";
 
     final a = html.AnchorElement()
-      ..download = fileName + fileType
+      ..download = fileNameWithExtension
       ..href = uriData
       ..style.display = "none";
 
@@ -198,17 +198,16 @@ class BpmnViewFooter extends StatelessWidget {
   }) async {
     final originXml = await getXmlFromModeler(viewer);
 
-    final definitionId = await Bpmn.parse(originXml).getId();
-    final definitionName = await Bpmn.parse(originXml).getDefinitionName();
-    final name = saveFileName ?? definitionName ?? definitionId;
-    final fileName = name ?? "";
-    const fileType = '.bpmn';
+    final bpmn = Bpmn.parse(originXml);
+    final name =
+        saveFileName ?? await bpmn.getDefinitionName() ?? await bpmn.getId();
+    final fileNameWithExtension = "${name ?? "_"}.bpmn";
 
     final xmlBytes = utf8.encode(originXml);
     final blob = html.Blob([xmlBytes], ".xml");
 
     final a = html.AnchorElement()
-      ..download = fileName + fileType
+      ..download = fileNameWithExtension
       ..href = html.Url.createObjectUrl(blob)
       ..style.display = "none";
 

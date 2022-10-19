@@ -41,31 +41,20 @@ class _BpmnViewState extends State<BpmnView> {
     const event = ReadXml();
     bpmnViewBloc.getController().add(event);
 
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      navigatedViewer?.onViewboxChange((_) {
+    streamSubscription = bpmnViewBloc.getStream().listen((state) {
+      if (state is ViewboxUpdate) {
+        final viewer = navigatedViewer;
+        if (viewer == null) return;
         final canvas = bpmnCanvas;
         if (canvas == null) return;
+
+        final updatedViewbox = state.viewbox;
         final viewbox = canvas.viewbox();
 
-        final event = ViewboxChanged(viewbox: viewbox);
-        bpmnViewBloc.getController().add(event);
-      });
+        if (updatedViewbox.compareTo(viewbox)) return;
 
-      streamSubscription = bpmnViewBloc.getStream().listen((state) {
-        if (state is ViewboxUpdate) {
-          final viewer = navigatedViewer;
-          if (viewer == null) return;
-          final canvas = bpmnCanvas;
-          if (canvas == null) return;
-
-          final updatedViewbox = state.viewbox;
-          final viewbox = canvas.viewbox();
-
-          if (updatedViewbox.compareTo(viewbox)) return;
-
-          canvas.viewbox(updatedViewbox);
-        }
-      });
+        canvas.viewbox(updatedViewbox);
+      }
     });
   }
 
@@ -79,7 +68,7 @@ class _BpmnViewState extends State<BpmnView> {
   Widget build(BuildContext context) {
     return StreamBuilder<BpmnViewState>(
       stream:
-          bpmnViewBloc.getStream().where((state) => state is XmlReadSuccessful),
+      bpmnViewBloc.getStream().where((state) => state is XmlReadSuccessful),
       builder: (context, snapshot) {
         final state = snapshot.data;
         if (state == null) return Container();
@@ -107,6 +96,15 @@ class _BpmnViewState extends State<BpmnView> {
           SchedulerBinding.instance.addPostFrameCallback((_) async {
             await viewer.importXML(xml);
             canvas.zoom('fit-viewport');
+
+            viewer.onViewboxChange((_) {
+              final canvas = bpmnCanvas;
+              if (canvas == null) return;
+              final viewbox = canvas.viewbox();
+
+              final event = ViewboxChanged(viewbox: viewbox);
+              bpmnViewBloc.getController().add(event);
+            });
           });
 
           return Stack(

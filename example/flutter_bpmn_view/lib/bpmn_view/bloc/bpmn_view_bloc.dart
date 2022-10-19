@@ -29,8 +29,9 @@ class BpmnViewBloc implements BpmnViewBlocInterface {
     eventStream = eventController.stream;
 
     eventSubscription = eventStream.listen((event) {
-      if (event is ReadXml) handleReadXmlEvent(event);
-      if (event is ViewboxChanged) handleViewboxChangedEvent(event);
+      if (event is ReadXml) readXmlEventHandler(event);
+      if (event is ViewboxChanged) viewboxChangedEventHandler(event);
+      if (event is ViewboxUpdated) viewboxUpdatedEventHandler(event);
     });
   }
 
@@ -48,13 +49,18 @@ class BpmnViewBloc implements BpmnViewBlocInterface {
     eventController.close();
   }
 
-  Future<void> handleReadXmlEvent(ReadXml _) async {
+  Future<void> readXmlEventHandler(ReadXml _) async {
     final state = XmlReadSuccessful(xml: xml);
     stateController.add(state);
   }
 
-  Future<void> handleViewboxChangedEvent(ViewboxChanged event) async {
+  Future<void> viewboxChangedEventHandler(ViewboxChanged event) async {
     final state = ViewboxChange(viewbox: event.viewbox);
+    stateController.add(state);
+  }
+
+  Future<void> viewboxUpdatedEventHandler(ViewboxUpdated event) async {
+    final state = ViewboxUpdate(viewbox: event.viewbox);
     stateController.add(state);
   }
 }
