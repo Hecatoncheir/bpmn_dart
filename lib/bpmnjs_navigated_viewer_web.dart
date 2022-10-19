@@ -75,6 +75,8 @@ class BpmnSavedSvgResponse {
   external factory BpmnSavedSvgResponse();
 }
 
+typedef OnViewboxChangeCallback = Function(NavigatedViewer);
+
 @JS()
 class NavigatedViewer {
   external NavigatedViewer(BpmnOptions options);
@@ -96,6 +98,17 @@ class NavigatedViewer {
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
   external BpmnCanvas get(String name);
+}
+
+extension OnCallback on NavigatedViewer {
+  void onViewboxChange(OnViewboxChangeCallback callback) {
+    callMethod(this, "on", [
+      "canvas.viewbox.changed",
+      allowInterop((_, __) {
+        callback(this);
+      }),
+    ]);
+  }
 }
 
 /// It takes a NavigatedViewer and returns a Future that resolves to the XML of the modeler

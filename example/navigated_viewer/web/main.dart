@@ -1,4 +1,6 @@
 import 'dart:html';
+import 'dart:js';
+import 'dart:js_util';
 
 import 'package:bpmn_dart/bpmn.dart';
 import 'package:bpmn_dart/bpmnjs_navigated_viewer.dart';
@@ -25,6 +27,14 @@ Future<void> main() async {
   final element = querySelector('#output');
   final view = NavigatedViewer(BpmnOptions(container: element));
   view.importXML(xml);
+
+  final viewbox = view.get("canvas").viewbox();
+
+  view.onViewboxChange((view) {
+    final viewbox = view.get("canvas").viewbox();
+    print(viewbox.x);
+    print(viewbox.y);
+  });
 
   Future(() async {
     final canvas = view.get('canvas');
