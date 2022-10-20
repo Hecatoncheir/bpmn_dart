@@ -5,7 +5,6 @@ library bpmnjs;
 
 import 'dart:math';
 
-import 'package:bpmn_dart/bpmnjs_modeler.dart';
 import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 
@@ -88,8 +87,6 @@ class BpmnSavedSvgResponse {
   external factory BpmnSavedSvgResponse();
 }
 
-typedef OnViewboxChangeCallback = Function(NavigatedViewer);
-
 @JS()
 class NavigatedViewer {
   external NavigatedViewer(BpmnOptions options);
@@ -112,6 +109,8 @@ class NavigatedViewer {
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
   external BpmnCanvas get(String name);
 }
+
+typedef OnViewboxChangeCallback = Function(NavigatedViewer);
 
 extension OnCallback on NavigatedViewer {
   void onViewboxChange(OnViewboxChangeCallback callback) {

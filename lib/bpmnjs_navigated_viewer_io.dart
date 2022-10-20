@@ -33,6 +33,18 @@ class CanvasViewbox {
   external factory CanvasViewbox({x, y, width, height});
 }
 
+extension Compare on CanvasViewbox {
+  bool compareTo(CanvasViewbox other) {
+    if (x == other.x &&
+        y == other.y &&
+        width == other.width &&
+        height == other.height) {
+      return true;
+    }
+    return false;
+  }
+}
+
 class BpmnCanvas {
   external factory BpmnCanvas();
 
@@ -61,6 +73,12 @@ class NavigatedViewer {
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
   external BpmnCanvas get(String name);
+}
+
+typedef OnViewboxChangeCallback = Function(NavigatedViewer);
+
+extension OnCallback on NavigatedViewer {
+  void onViewboxChange(OnViewboxChangeCallback _) {} // ignore: no-empty-block
 }
 
 Future<String> getXmlFromModeler(NavigatedViewer _) async => "";
