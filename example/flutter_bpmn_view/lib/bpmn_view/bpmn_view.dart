@@ -95,7 +95,10 @@ class _BpmnViewState extends State<BpmnView> {
 
           SchedulerBinding.instance.addPostFrameCallback((_) async {
             await viewer.importXML(xml);
-            canvas.zoom('fit-viewport');
+
+            viewer.onImportRenderComplete((_) {
+              canvas.fitViewport();
+            });
 
             viewer.onViewboxChange((_) {
               final canvas = bpmnCanvas;

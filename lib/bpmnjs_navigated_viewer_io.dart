@@ -57,6 +57,12 @@ class BpmnCanvas {
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
 }
 
+extension Utils on BpmnCanvas {
+  void fitViewport() {} // ignore: no-empty-block
+  void centerViewport() {} // ignore: no-empty-block
+  void autoViewport() {} // ignore: no-empty-block
+}
+
 class BpmnSavedXmlResponse {
   external String get xml;
   external factory BpmnSavedXmlResponse();
@@ -75,10 +81,11 @@ class NavigatedViewer {
   external BpmnCanvas get(String name);
 }
 
-typedef OnViewboxChangeCallback = Function(NavigatedViewer);
+typedef OnCallbackCallback = Function(NavigatedViewer);
 
 extension OnCallback on NavigatedViewer {
-  void onViewboxChange(OnViewboxChangeCallback _) {} // ignore: no-empty-block
+  void onViewboxChange(OnCallbackCallback _) {} // ignore: no-empty-block
+  void onImportRenderComplete(OnCallbackCallback _) {} // ignore: no-empty-block
 }
 
 Future<String> getXmlFromModeler(NavigatedViewer _) async => "";

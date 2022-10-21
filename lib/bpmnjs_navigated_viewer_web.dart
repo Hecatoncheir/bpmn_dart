@@ -73,6 +73,26 @@ class BpmnCanvas {
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
 }
 
+extension Utils on BpmnCanvas {
+  void fitViewport() {
+    callMethod(this, "zoom", [
+      "fit-viewport",
+    ]);
+  }
+
+  void centerViewport() {
+    callMethod(this, "zoom", [
+      "center",
+    ]);
+  }
+
+  void autoViewport() {
+    callMethod(this, "zoom", [
+      "auto",
+    ]);
+  }
+}
+
 @JS()
 @anonymous
 class BpmnSavedXmlResponse {
@@ -103,19 +123,28 @@ class NavigatedViewer {
   //       canvas.zoom('fit-viewport');
   //     });
   //   }
-  external Future<NavigatedViewer> importXML(String xml);
+  external Future<Object> importXML(String xml);
 
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
   external BpmnCanvas get(String name);
 }
 
-typedef OnViewboxChangeCallback = Function(NavigatedViewer);
+typedef OnCallbackCallback = Function(NavigatedViewer);
 
 extension OnCallback on NavigatedViewer {
-  void onViewboxChange(OnViewboxChangeCallback callback) {
+  void onViewboxChange(OnCallbackCallback callback) {
     callMethod(this, "on", [
       "canvas.viewbox.changed",
+      allowInterop((_, __) {
+        callback(this);
+      }),
+    ]);
+  }
+
+  void onImportRenderComplete(OnCallbackCallback callback) {
+    callMethod(this, "on", [
+      "import.render.complete",
       allowInterop((_, __) {
         callback(this);
       }),
