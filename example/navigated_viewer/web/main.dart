@@ -1,6 +1,4 @@
 import 'dart:html';
-import 'dart:js';
-import 'dart:js_util';
 
 import 'package:bpmn_dart/bpmn.dart';
 import 'package:bpmn_dart/bpmnjs_navigated_viewer.dart';
@@ -22,13 +20,11 @@ Future<void> main() async {
       </bpmn:definitions>
       """;
 
-  final bpmn = Bpmn.parse(xml);
+  final _ = Bpmn.parse(xml);
 
   final element = querySelector('#output');
   final view = NavigatedViewer(BpmnOptions(container: element));
   view.importXML(xml);
-
-  final viewbox = view.get("canvas").viewbox();
 
   view.onViewboxChange((view) {
     final viewbox = view.get("canvas").viewbox();
@@ -36,9 +32,14 @@ Future<void> main() async {
     print(viewbox.y);
   });
 
+  view.onImportRenderComplete((view) {
+    final canvas = view.get("canvas");
+    canvas.fitViewport();
+  });
+
   Future(() async {
     final canvas = view.get('canvas');
-    canvas.zoom('fit-viewport');
+    canvas.centerViewport();
 
     final viewbox = canvas.viewbox();
     final x = viewbox.width / 3;
