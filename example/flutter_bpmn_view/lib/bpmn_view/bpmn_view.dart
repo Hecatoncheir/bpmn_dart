@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 
 import 'package:uuid/uuid.dart';
@@ -27,32 +26,38 @@ class BpmnView extends StatefulWidget {
 
 class _BpmnViewState extends State<BpmnView> {
   late BpmnViewBlocInterface bpmnViewBloc;
-  NavigatedViewer? navigatedViewer;
-  BpmnCanvas? bpmnCanvas;
 
   StreamSubscription<BpmnViewState>? streamSubscription;
+  NavigatedViewer? navigatedViewer;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     bpmnViewBloc = widget.bloc;
-
-    const event = ReadXml();
-    bpmnViewBloc.getController().add(event);
+    bpmnViewBloc.getController().add(const ReadXml());
 
     streamSubscription = bpmnViewBloc.getStream().listen((state) {
+      if (state is XmlReadSuccessful) {
+        Future.delayed(const Duration(seconds: 3), () {
+          navigatedViewer?.importXML(state.xml);
+        });
+
+        navigatedViewer?.onImportRenderComplete((view) {
+          view.canvas().fitViewport();
+        });
+      }
+
       if (state is ViewboxUpdate) {
         final viewer = navigatedViewer;
         if (viewer == null) return;
-        final canvas = bpmnCanvas;
-        if (canvas == null) return;
+
+        final canvas = viewer.canvas();
 
         final updatedViewbox = state.viewbox;
         final viewbox = canvas.viewbox();
 
         if (updatedViewbox.compareTo(viewbox)) return;
-
         canvas.viewbox(updatedViewbox);
       }
     });
@@ -74,41 +79,15 @@ class _BpmnViewState extends State<BpmnView> {
         if (state == null) return Container();
 
         if (state is XmlReadSuccessful) {
-          final xml = state.xml;
-          final area = DivElement()
-            ..style.position = "relative"
-            ..style.left = "0"
-            ..style.top = "0"
-            ..style.right = "0"
-            ..style.bottom = "0";
+          final area = DivElement();
 
           final viewer = NavigatedViewer(BpmnOptions(container: area));
           navigatedViewer = viewer;
-
-          final canvas = viewer.get('canvas');
-          bpmnCanvas = canvas;
 
           final id = const Uuid().v4();
 
           // ignore: undefined_prefixed_name
           ui.platformViewRegistry.registerViewFactory(id, (int viewId) => area);
-
-          SchedulerBinding.instance.addPostFrameCallback((_) async {
-            await viewer.importXML(xml);
-
-            viewer.onImportRenderComplete((_) {
-              canvas.fitViewport();
-            });
-
-            viewer.onViewboxChange((_) {
-              final canvas = bpmnCanvas;
-              if (canvas == null) return;
-              final viewbox = canvas.viewbox();
-
-              final event = ViewboxChanged(viewbox: viewbox);
-              bpmnViewBloc.getController().add(event);
-            });
-          });
 
           return Stack(
             children: [

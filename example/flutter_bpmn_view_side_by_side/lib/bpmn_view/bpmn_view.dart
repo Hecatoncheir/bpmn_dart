@@ -68,7 +68,7 @@ class _BpmnViewState extends State<BpmnView> {
   Widget build(BuildContext context) {
     return StreamBuilder<BpmnViewState>(
       stream:
-      bpmnViewBloc.getStream().where((state) => state is XmlReadSuccessful),
+          bpmnViewBloc.getStream().where((state) => state is XmlReadSuccessful),
       builder: (context, snapshot) {
         final state = snapshot.data;
         if (state == null) return Container();
@@ -85,7 +85,7 @@ class _BpmnViewState extends State<BpmnView> {
           final viewer = NavigatedViewer(BpmnOptions(container: area));
           navigatedViewer = viewer;
 
-          final canvas = viewer.get('canvas');
+          final canvas = viewer.canvas();
           bpmnCanvas = canvas;
 
           final id = const Uuid().v4();

@@ -5,20 +5,20 @@ import 'package:bpmn_dart/bpmnjs_navigated_viewer.dart';
 
 Future<void> main() async {
   const xml = """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0ydy6jl" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.1">
-        <bpmn:process id="Definition_ID" name="Definition_Name" isExecutable="true">
-          <bpmn:startEvent id="StartEvent_1" />
-        </bpmn:process>
-        <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-          <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Definition_ID">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-              <dc:Bounds x="179" y="79" width="36" height="36" />
-            </bpmndi:BPMNShape>
-          </bpmndi:BPMNPlane>
-        </bpmndi:BPMNDiagram>
-      </bpmn:definitions>
-      """;
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn2:process id="Process_1" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="412.0" y="240.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
+""";
 
   final _ = Bpmn.parse(xml);
 
@@ -27,20 +27,18 @@ Future<void> main() async {
   view.importXML(xml);
 
   view.onViewboxChange((view) {
-    final viewbox = view.get("canvas").viewbox();
+    final viewbox = view.canvas().viewbox();
     print(viewbox.x);
     print(viewbox.y);
   });
 
   view.onImportRenderComplete((view) {
-    final canvas = view.get("canvas");
+    final canvas = view.canvas();
     canvas.fitViewport();
   });
 
   Future(() async {
-    final canvas = view.get('canvas');
-    canvas.centerViewport();
-
+    final canvas = view.canvas();
     final viewbox = canvas.viewbox();
     final x = viewbox.width / 3;
     final y = viewbox.height / 3;

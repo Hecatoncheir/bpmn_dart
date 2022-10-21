@@ -57,7 +57,7 @@ class BpmnCanvas {
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
 }
 
-extension Utils on BpmnCanvas {
+extension BpmnCanvasUtils on BpmnCanvas {
   void fitViewport() {} // ignore: no-empty-block
   void centerViewport() {} // ignore: no-empty-block
   void autoViewport() {} // ignore: no-empty-block
@@ -79,6 +79,10 @@ class NavigatedViewer {
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
   external BpmnCanvas get(String name);
+}
+
+extension NavigatedViewerUtils on NavigatedViewer {
+  BpmnCanvas canvas() => BpmnCanvas();
 }
 
 typedef OnCallbackCallback = Function(NavigatedViewer);

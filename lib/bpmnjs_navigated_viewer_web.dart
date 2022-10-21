@@ -73,7 +73,7 @@ class BpmnCanvas {
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
 }
 
-extension Utils on BpmnCanvas {
+extension BpmnCanvasUtils on BpmnCanvas {
   void fitViewport() {
     callMethod(this, "zoom", [
       "fit-viewport",
@@ -127,7 +127,10 @@ class NavigatedViewer {
 
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
-  external BpmnCanvas get(String name);
+}
+
+extension NavigatedViewerUtils on NavigatedViewer {
+  BpmnCanvas canvas() => callMethod(this, "get", ["canvas"]);
 }
 
 typedef OnCallbackCallback = Function(NavigatedViewer);
