@@ -41,9 +41,8 @@ class _BpmnViewState extends State<BpmnView> {
     streamSubscription = bpmnViewBloc.getStream().listen((state) {
       if (state is XmlReadSuccessful) {
         SchedulerBinding.instance.addPostFrameCallback((_) async {
-          Future(() {
-            navigatedViewer?.importXML(state.xml);
-          });
+          Future(() async =>
+              Future(() async => navigatedViewer?.importXML(state.xml)));
 
           navigatedViewer?.onImportRenderComplete((view) {
             view.canvas().fitViewport();
