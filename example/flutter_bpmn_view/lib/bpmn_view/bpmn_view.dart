@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:universal_html/html.dart';
@@ -39,12 +40,14 @@ class _BpmnViewState extends State<BpmnView> {
 
     streamSubscription = bpmnViewBloc.getStream().listen((state) {
       if (state is XmlReadSuccessful) {
-        Future.delayed(const Duration(seconds: 3), () {
-          navigatedViewer?.importXML(state.xml);
-        });
+        SchedulerBinding.instance.addPostFrameCallback((_) async {
+          Future(() {
+            navigatedViewer?.importXML(state.xml);
+          });
 
-        navigatedViewer?.onImportRenderComplete((view) {
-          view.canvas().fitViewport();
+          navigatedViewer?.onImportRenderComplete((view) {
+            view.canvas().fitViewport();
+          });
         });
       }
 
@@ -79,12 +82,11 @@ class _BpmnViewState extends State<BpmnView> {
         if (state == null) return Container();
 
         if (state is XmlReadSuccessful) {
-          final area = DivElement();
+          final id = const Uuid().v4();
+          final area = DivElement()..id = id;
 
           final viewer = NavigatedViewer(BpmnOptions(container: area));
           navigatedViewer = viewer;
-
-          final id = const Uuid().v4();
 
           // ignore: undefined_prefixed_name
           ui.platformViewRegistry.registerViewFactory(id, (int viewId) => area);
