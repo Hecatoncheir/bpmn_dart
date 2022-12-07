@@ -14,11 +14,6 @@ class OriginalXmlReadSuccessful extends BpmnModelerState {
   const OriginalXmlReadSuccessful({required this.xml});
 }
 
-class OriginalXmlReadUnsuccessful extends BpmnModelerState {
-  final String error;
-  const OriginalXmlReadUnsuccessful({required this.error});
-}
-
 class XmlReadSuccessful extends BpmnModelerState {
   final String xml;
   const XmlReadSuccessful({required this.xml});
