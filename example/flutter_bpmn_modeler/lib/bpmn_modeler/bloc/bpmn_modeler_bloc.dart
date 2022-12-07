@@ -68,13 +68,7 @@ class BpmnModelerBloc implements BpmnModelerBlocInterface {
   }
 
   Future<void> originalXmlReadEventHandler(OriginalXmlRead _) async {
-    final originalXml = xml;
-    if (originalXml == null) {
-      stateController
-          .add(const OriginalXmlReadUnsuccessful(error: "XML is null"));
-    } else {
-      stateController.add(OriginalXmlReadSuccessful(xml: originalXml));
-    }
+    stateController.add(OriginalXmlReadSuccessful(xml: xml));
   }
 
   Future<void> xmlReadEventHandler(XmlRead _) async {
@@ -90,10 +84,10 @@ class BpmnModelerBloc implements BpmnModelerBlocInterface {
   Future<void> xmlResetEventHandler(XmlReset _) async {
     final originalXml = xml;
     final modelerForGetXmlFrom = modeler;
-    if (originalXml == null || modelerForGetXmlFrom == null) {
-      stateController.add(const XmlResetUnsuccessful(error: "XML is null"));
+    if (modelerForGetXmlFrom == null) {
+      stateController.add(const XmlResetUnsuccessful(error: "Modeler is null"));
     } else {
-      await modelerForGetXmlFrom.importXML("");
+      await modelerForGetXmlFrom.importXML(originalXml);
       final xml = await getXmlFromModeler(modelerForGetXmlFrom);
       stateController.add(XmlResetSuccessful(xml: xml));
     }
