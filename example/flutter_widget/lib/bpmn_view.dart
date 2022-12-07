@@ -91,7 +91,7 @@ class _BpmnViewState extends State<BpmnView> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       viewer
         ..importXML(xml)
-        ..get('canvas').zoom('fit-viewport');
+        ..canvas().fitViewport();
     });
   }
 

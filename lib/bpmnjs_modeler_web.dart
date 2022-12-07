@@ -39,13 +39,50 @@ class CanvasViewbox {
   external factory CanvasViewbox({x, y, width, height});
 }
 
+extension Compare on CanvasViewbox {
+  bool compareTo(CanvasViewbox other) {
+    if (x == other.x &&
+        y == other.y &&
+        width == other.width &&
+        height == other.height) {
+      return true;
+    }
+    return false;
+  }
+}
+
 @JS()
 @anonymous
 class BpmnCanvas {
   external factory BpmnCanvas();
+
   // ignore: no-object-declaration
-  external Object zoom([Object type]);
+  external Object zoom([
+    Object type,
+    Point point,
+  ]);
+
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
+}
+
+extension BpmnCanvasUtils on BpmnCanvas {
+  void fitViewport() {
+    callMethod(this, "zoom", [
+      "fit-viewport",
+    ]);
+  }
+
+  void centerViewport() {
+    callMethod(this, "zoom", [
+      "center",
+    ]);
+  }
+
+  void autoViewport() {
+    callMethod(this, "zoom", [
+      "auto",
+    ]);
+  }
 }
 
 @JS()
@@ -65,10 +102,49 @@ class BpmnSavedSvgResponse {
 @JS('BpmnJS')
 class BpmnJS {
   external BpmnJS(BpmnOptions options);
+
+  /// importXml - нужен для отображения bpmn в html элементе.
+  /// Если нужно сделать что-то с Modeler после импортирования xml,
+  /// нужно использоваться Future и
+  /// тот же Modeler(не тот что возвращается из importXML).
+  /// Пример:
+  ///   void importXML(String xml) {
+  //     _modeler.importXML(xml);
+  //     Future(() {
+  //       final canvas = _modeler.get('canvas');
+  //       canvas.zoom('fit-viewport');
+  //     });
+  //   }
   external Future<BpmnJS> importXML(String xml);
+
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
-  external BpmnCanvas get(String name);
+}
+
+extension BpmnJSUtils on BpmnJS {
+  BpmnCanvas canvas() => callMethod(this, "get", ["canvas"]);
+}
+
+typedef OnCallbackCallback = Function(BpmnJS);
+
+extension OnCallback on BpmnJS {
+  void onViewboxChange(OnCallbackCallback callback) {
+    callMethod(this, "on", [
+      "canvas.viewbox.changed",
+      allowInterop((_, __) {
+        callback(this);
+      }),
+    ]);
+  }
+
+  void onImportRenderComplete(OnCallbackCallback callback) {
+    callMethod(this, "on", [
+      "import.render.complete",
+      allowInterop((_, __) {
+        callback(this);
+      }),
+    ]);
+  }
 }
 
 Future<String> getXmlFromModeler(BpmnJS modeler) async =>

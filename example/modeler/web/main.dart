@@ -12,9 +12,6 @@ Future<void> main() async {
         </bpmn:process>
         <bpmndi:BPMNDiagram id="BPMNDiagram_1">
           <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Definition_ID">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-              <dc:Bounds x="179" y="79" width="36" height="36" />
-            </bpmndi:BPMNShape>
           </bpmndi:BPMNPlane>
         </bpmndi:BPMNDiagram>
       </bpmn:definitions>
@@ -27,8 +24,8 @@ Future<void> main() async {
   view.importXML(xml);
 
   Future(() async {
-    final canvas = view.get('canvas');
-    canvas.zoom('fit-viewport');
+    final canvas = view.canvas();
+    canvas.fitViewport();
 
     final viewbox = canvas.viewbox();
     final x = viewbox.width / 3;
