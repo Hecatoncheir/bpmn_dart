@@ -28,11 +28,29 @@ class CanvasViewbox {
   external factory CanvasViewbox({x, y, width, height});
 }
 
+extension Compare on CanvasViewbox {
+  bool compareTo(CanvasViewbox other) {
+    if (x == other.x &&
+        y == other.y &&
+        width == other.width &&
+        height == other.height) {
+      return true;
+    }
+    return false;
+  }
+}
+
 class BpmnCanvas {
   external factory BpmnCanvas();
   // ignore: no-object-declaration
   external Object zoom([Object type]);
   external CanvasViewbox viewbox([CanvasViewbox viewbox]);
+}
+
+extension BpmnCanvasUtils on BpmnCanvas {
+  void fitViewport() {} // ignore: no-empty-block
+  void centerViewport() {} // ignore: no-empty-block
+  void autoViewport() {} // ignore: no-empty-block
 }
 
 class BpmnSavedXmlResponse {
@@ -50,7 +68,17 @@ class BpmnJS {
   external Future<BpmnJS> importXML(String xml);
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
-  external BpmnCanvas get(String name);
+}
+
+extension BpmnJSUtils on BpmnJS {
+  BpmnCanvas canvas() => BpmnCanvas();
+}
+
+typedef OnCallbackCallback = Function(BpmnJS);
+
+extension OnCallback on BpmnJS {
+  void onViewboxChange(OnCallbackCallback _) {} // ignore: no-empty-block
+  void onImportRenderComplete(OnCallbackCallback _) {} // ignore: no-empty-block
 }
 
 Future<String> getXmlFromModeler(BpmnJS _) async => "";

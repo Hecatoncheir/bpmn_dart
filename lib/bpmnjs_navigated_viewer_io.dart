@@ -78,7 +78,6 @@ class NavigatedViewer {
   external Future<NavigatedViewer> importXML(String xml);
   external Future<BpmnSavedXmlResponse> saveXML(SaveXMLOptions options);
   external Future<BpmnSavedSvgResponse> saveSVG(SaveSvgOptions options);
-  external BpmnCanvas get(String name);
 }
 
 extension NavigatedViewerUtils on NavigatedViewer {
