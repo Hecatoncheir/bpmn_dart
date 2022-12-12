@@ -128,6 +128,15 @@ extension BpmnJSUtils on BpmnJS {
 typedef OnCallbackCallback = Function(BpmnJS);
 
 extension OnCallback on BpmnJS {
+  void onChange(OnCallbackCallback callback) {
+    callMethod(this, "on", [
+      "commandStack.changed",
+      allowInterop((_, __) {
+        callback(this);
+      }),
+    ]);
+  }
+
   void onViewboxChange(OnCallbackCallback callback) {
     callMethod(this, "on", [
       "canvas.viewbox.changed",

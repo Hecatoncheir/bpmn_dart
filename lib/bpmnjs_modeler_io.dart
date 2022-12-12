@@ -77,6 +77,7 @@ extension BpmnJSUtils on BpmnJS {
 typedef OnCallbackCallback = Function(BpmnJS);
 
 extension OnCallback on BpmnJS {
+  void onChange(OnCallbackCallback _) {} // ignore: no-empty-block
   void onViewboxChange(OnCallbackCallback _) {} // ignore: no-empty-block
   void onImportRenderComplete(OnCallbackCallback _) {} // ignore: no-empty-block
 }
