@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bpmn_dart/bpmn_lint_web.dart';
 import 'package:bpmn_dart/bpmnjs_modeler.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart';
@@ -64,7 +65,31 @@ class _BpmnModelerState extends State<BpmnModeler> {
     final area = DivElement()..id = areaId;
     ui.platformViewRegistry.registerViewFactory(areaId, (int id) => area);
 
-    modeler = BpmnJS(BpmnOptions(container: area));
+    final lintModule = BpmnJsBpmnlint();
+    final lintConfig = """
+{
+  "extends": [
+    "bpmnlint:recommended",
+    "plugin:local/recommended"
+  ],
+  "rules": {
+    "local/no-manual-task": "warn"
+  }
+}
+""";
+
+    modeler = BpmnJS.withCustomOptions(
+      bpmnCustomOptions({
+        "container": area,
+        "linting": {
+          "bpmnlint": lintConfig,
+        },
+        "additionalModules": [
+          lintModule,
+        ]
+      }),
+    );
+
     modeler.onChange((_) {
       print("Change");
     });

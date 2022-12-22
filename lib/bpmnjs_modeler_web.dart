@@ -14,6 +14,18 @@ class BpmnOptions {
   external factory BpmnOptions({container});
 }
 
+Object bpmnCustomOptions(Map<dynamic, dynamic> map) => mapToJSObject(map);
+
+Object mapToJSObject(Map<dynamic, dynamic> map) {
+  var object = newObject();
+  map.forEach((k, v) {
+    var key = k;
+    var value = v;
+    setProperty(object, key, value);
+  });
+  return object;
+}
+
 @JS()
 @anonymous
 class SaveXMLOptions {
@@ -102,6 +114,7 @@ class BpmnSavedSvgResponse {
 @JS('BpmnJS')
 class BpmnJS {
   external BpmnJS(BpmnOptions options);
+  external BpmnJS.withCustomOptions(options);
 
   /// importXml - нужен для отображения bpmn в html элементе.
   /// Если нужно сделать что-то с Modeler после импортирования xml,
