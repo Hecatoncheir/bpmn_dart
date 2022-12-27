@@ -1,9 +1,11 @@
 // ignore_for_file: prefer-match-file-name
 
 @JS()
-library bpmnJsBpmnlint;
+library bpmnJSBpmnlint;
 
 import 'package:js/js.dart';
 
-@JS('BpmnJsBpmnlint')
-class BpmnJsBpmnlint {}
+@JS('bpmnJSBpmnlint')
+class BpmnJSBpmnlint {
+  external BpmnJSBpmnlint();
+}

@@ -15,6 +15,18 @@ class BpmnOptions {
   external factory BpmnOptions({container});
 }
 
+Object bpmnCustomOptions(Map<dynamic, dynamic> map) => mapToJSObject(map);
+
+Object mapToJSObject(Map<dynamic, dynamic> map) {
+  var object = newObject();
+  map.forEach((k, v) {
+    var key = k;
+    var value = v;
+    setProperty(object, key, value);
+  });
+  return object;
+}
+
 @JS()
 @anonymous
 class SaveSVGOptions {
@@ -110,6 +122,7 @@ class BpmnSavedSvgResponse {
 @JS()
 class NavigatedViewer {
   external NavigatedViewer(BpmnOptions options);
+  external NavigatedViewer.withCustomOptions(options);
 
   /// importXml - нужен для отображения bpmn в html элементе.
   /// Если нужно сделать что-то с NavigatedViewer после импортирования xml,

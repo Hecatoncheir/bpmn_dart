@@ -7,16 +7,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="scaffolded-by" content="https://github.com/dart-lang/sdk">
-  <title>Modeler</title>
+  <title>Modeler lint</title>
   <link rel="stylesheet" href="styles.css">
   <script defer src="main.dart.js"></script>
 
   <!-- Bpmn -->
-  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.0.3/dist/assets/diagram-js.css" />
-  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.0.3/dist/assets/bpmn-js.css" />
-  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@11.0.3/dist/assets/bpmn-font/css/bpmn.css" />
+  <!-- https://unpkg.com/browse/bpmn-js@11.1.0/dist/ -->
+  <link rel="stylesheet" href="bpmn_js/assets/bpmn-js.css">
+  <link rel="stylesheet" href="bpmn_js/assets/diagram-js.css">
+  <link rel="stylesheet" href="bpmn_js/assets/bpmn-font/css/bpmn.css">
+  <link rel="stylesheet" href="bpmn_js/assets/bpmn-font/css/bpmn-codes.css">
+  <link rel="stylesheet" href="bpmn_js/assets/bpmn-font/css/bpmn-embedded.css">
+  <script type="module" src="bpmn_js/bpmn-modeler.development.js"></script>
 
-  <script src="https://unpkg.com/bpmn-js@11.0.3/dist/bpmn-modeler.development.js"></script>
+  <!-- Module -->
+  <!-- https://unpkg.com/browse/bpmn-js-bpmnlint@0.20.0/dist/ -->
+  <link rel="stylesheet" href="bpmn_js_bpmn_lint/assets/css/bpmn-js-bpmnlint.css">
+  <script src="bpmn_js_bpmn_lint/bpmn-js-bpmnlint.umd.js"></script>
 </head>
 
 <body>
